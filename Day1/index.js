@@ -46,8 +46,7 @@ console.log(`Type of myNumber i.e ${myNumber} is `,  typeof(myNumber));
 console.log(`Type of boolval i.e ${boolval} is `,  typeof(boolval));
 console.log(`Type of mypost i.e ${mypost} is `,  typeof(mypost));
 console.log(`Type of arr i.e ${arr} is `,  typeof(arr));
-console.log(`Type of myObj i.e ${myObj} is `,  typeof(myObj));
-
+console.log(`Type of myObj i.e ${JSON.stringify(myObj)} is `,  typeof(myObj));
 
 
 // Activity 4 : Reassigning Variables

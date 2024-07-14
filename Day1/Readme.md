@@ -1,5 +1,6 @@
-This is the Day1 of 30 days Javascript from the roadmap from hiteshchaudhary a.k.a 'Chai aur Code'.
+This is the Day-1 of 30 days Javascript 
 
+Topic : Variables and Datatypes
  Acivity 1: Variable Declaration 
  ```javascript 
 // Task 1 : Declare a variable using var  , assign it a number and log the value in console. 
