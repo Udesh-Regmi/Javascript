@@ -33,6 +33,7 @@ function subtraction(num1, num2){
  // Task 3: A program to multiply two numbers and log the result to the console.
  function multiply(num1, num2){
     return num1*num2; 
+    
  };
  let multipliedValue = multiply(4, 3)
  console.log('Multiplied value is ', multipliedValue)
