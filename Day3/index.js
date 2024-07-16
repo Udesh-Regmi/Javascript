@@ -1,8 +1,4 @@
-This is Day-3 of 30 days Javascript
-Topic: Control Structure.
-
- Activity 1
-```javascript
+// Activity 1
 // Task 1 Write a program to check if the given number is positive negative or zero and console the value . 
 const submitbtn= document.getElementById('btn');
 submitbtn.addEventListener('click',()=>{
@@ -20,16 +16,18 @@ submitbtn.addEventListener('click',()=>{
         console.log('Zero value')
     }   
 })
-```
-```javascript
+
 // Task 2 Write a program to check if a person is eligible to vote (age>=18) and print the value to console
+
 const submitbtn2= document.getElementById('btn2')
+
 submitbtn2.addEventListener('click',()=>{
     const output2= document.getElementById('output2')
     const age= document.getElementById('age').value
+
     if(age>=18 && age<=100){
-    output2.innerHTML=`The person can vote in election`
-    console.log('The person can vote')
+output2.innerHTML=`The person can vote in election`
+console.log('The person can vote')
 
     }
     else if(age<18 && age>0){
@@ -37,16 +35,15 @@ submitbtn2.addEventListener('click',()=>{
         console.log('The person cannot vote')
     }
     else{
-    output2.innerHTML= `Please Enter a valid age.`
-    console.log('The provided information is not valid')
+output2.innerHTML= `Please Enter a valid age.`
+console.log('The provided information is not valid')
     }
 })
- ```
-Activity 2: Nested if-else condition.
- ```javascript
- // Task 3: Write a program to find the largest among three numbers using nested-if else statement
 
-    document.getElementById('btn3').addEventListener('click',()=>{
+//Activity 3: Nested if-else condition.
+// Task 3: Write a program to find the largest among three numbers using nested-if else statement
+
+document.getElementById('btn3').addEventListener('click',()=>{
     const num1= document.getElementById('num1').value
     const num2= document.getElementById('num2').value
     const num3= document.getElementById('num3').value
@@ -75,9 +72,8 @@ Activity 2: Nested if-else condition.
 
     }
 })
- ```
- Activity 3: Switch Case
- ```javascript
+
+// Activity 3: Switch Case
 // Task 4: Write a program to determine the day of the week based on number 1-7 and log the name to console.
 document.getElementById('btn4').addEventListener('click',()=>{
     let choosenday= document.getElementById('choosenday').value
@@ -112,9 +108,7 @@ document.getElementById('btn4').addEventListener('click',()=>{
     }
 
 })
- ```
 
- ```javascript
 // Task5: Write a program that uses switch case to assign a grade (A,B,C,D,F) based on the score and log the value to console.
 document.getElementById('btn5').addEventListener('click',(e)=>{
     const marks = Number(document.getElementById('grade').value);
@@ -143,25 +137,22 @@ document.getElementById('btn5').addEventListener('click',(e)=>{
 
     }
 })
- ```
- Activity 4: Ternary Operator (Conditional Operator)
-```javascript
+
+// Activity 4: Conditional (Ternary Operator)
 let marks= 90;
 ( marks>90 && marks <=100 )? console.log('A+'):(marks >80 && marks <=90) ? console.log('A'): (marks >70 && marks <=80)? console.log('B+'):(marks >60 && marks <=70) ?console.log('B'): console.log('Not Graded for us')
 //Task6: Write a program to find if the given number is even or odd using Ternary Operator.
 (marks%2===0)? console.log('Even Number'):console.log('odd Number');
 
-```
 
-Activity 5: Combining Condition
 
-```javascript
+//Activity 5: Combining Condition
 //Task 7 : Write a program to check if a year is leap year or not using multiple condition (divisible by 4, but not 100 unless also divisible by 400 ) and log the result to console.
 const year =Math.floor( Math.random()*10000)
 console.log(year)
 
 if(year%4===0){
-    if(!(year%100===0) ){
+    if(!(year%100===0) || (year %400 ===0 )){
     console.log(`${year} is a leap year`)
     }
     else{
@@ -171,5 +162,3 @@ if(year%4===0){
 else{
     console.log('Not divisible by 4')
 }
-
-```
