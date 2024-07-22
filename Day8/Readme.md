@@ -1,8 +1,8 @@
-This is Day-8 of Javascript .
+# This is Day-8 of Javascript .
 
-Topic: ES6+ Features
+# Topic: ES6+ Features
 
-Activity 1: Template literals
+- **Activity 1**: Template literals
 
 ```javascript
 // Task 1: Use temmplate  literals to create a string that includes variables for a person's name and age , and log the string to the console.

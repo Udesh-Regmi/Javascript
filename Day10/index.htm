@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event handling</title>
+</head>
+<body>
+    <div class="main">
+        <p class="firstpara">Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae, nostrum, alias rem recusandae nihil sunt deleniti nemo aperiam placeat, enim quibusdam? Laborum error mollitia nulla voluptatum aspernatur eum? Illo eaque cum assumenda.</p>
+        <button type="button" class="btn1">Submit Changes</button>
+
+    </div>
+    <div class="imagecontainer">
+        thi s is content in container
+        <img src="https://imgs.search.brave.com/YEH-d2QB7H-MrmaJGbo3M_uIcvaAXAiut1jZtkhO32s/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly90My5m/dGNkbi5uZXQvanBn/LzA4LzI1LzkxLzQ0/LzM2MF9GXzgyNTkx/NDQyM19zMWxwMDJ6/eWpmR3JGYVpLd2tU/blBRZWRrTmRIZFdk/ZC5qcGc" alt="">
+    </div>
+    <div class="input">
+       <label for="name">Name: </label>
+        <input type="text">
+       <label for="name">Paragraph: </label>
+        <input type="text" id="inppara">
+        <p class="paragraph_input"></p>
+    </div>
+    <div class="form">
+        <form  method="post" class="Form">
+            <label for="Email">Email: </label>
+            <input type="email" name="Email" id="email">
+            <label for="Password">Password: </label><input type="password" name="Password" id="password"></label>
+            <button type="submit" id="submit">Submit</button>
+        </form>
+    </div>
+    <div class="selectdropdowm">
+        <select name="Dropdown" id="dropdown">Select a value
+            <option value="Apple">Apple</option>
+            <option value="Orange">Orange</option>
+            <option value="Banana">banana</option>
+        </select>
+        <div class="selpara">
+            <ul id="listofli">
+                <li class="list1 lists">list1</li>
+                <li class="list2 lists">list2</li>
+                <li class="list3 lists">list3</li>
+                <li class="list4 lists">list4</li>
+            </ul>
+        </div>
+        <div id="parent">
+            <div>First content</div>
+            <button id="addButton">Add Child</button>
+        </div>
+    </div>
+    <script src="./index.js"></script>
+</body>
+</html>
