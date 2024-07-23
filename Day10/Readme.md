@@ -1,4 +1,4 @@
-# This is Day 9 of JavaScript.
+# This is Day 10 of JavaScript.
 
 # Topic: JavaScript Event Handling 
 
