@@ -1,20 +1,4 @@
 # This is Day 11 of Javascript
-# Topics:Promises and Async/Await in JavaScript
-
-## Activity 1: Understanding Promises
-
-### Task 1: Create a Promise that Resolves
-This task demonstrates creating a promise that resolves with a message after a 2-second timeout.
-```javascript
-const promise = new Promise((resolve, reject) => {
-    setTimeout(async () => {
-        await resolve(console.log('This is the resolved value after 2 seconds'));
-    }, 2000);
-});
-console.log(promise);
-```
-
-
 # Promises and Async/Await in JavaScript
 
 ## Activity 1: Understanding Promises
