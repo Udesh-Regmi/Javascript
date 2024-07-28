@@ -156,3 +156,54 @@ class PersonWithSetter {
 console.log(new PersonWithSetter('John','Cena', 25).name = 'Karlos');
 console.log(new PersonWithSetter('John','Cena', 25).fullName);
 
+// Activity 5: Private Fields (optional)
+
+// Task 9: Define a class named 'Account' with private fields 'balance' and a method to deposit and withdraw money. Ensure that the balance can only be updated through these methods.
+class Account {
+  // Private field for balance
+  #balance;
+
+  constructor(initialBalance) {
+      this.#balance = initialBalance;
+  }
+
+  // Method to deposit money
+  deposit(amount) {
+      if (amount > 0) {
+          this.#balance += amount;
+          console.log(`Deposited: ${amount}`);
+      } else {
+          console.log('Deposit amount must be positive');
+      }
+  }
+
+  // Method to withdraw money
+  withdraw(amount) {
+      if (amount > 0) {
+          if (amount <= this.#balance) {
+              this.#balance -= amount;
+              console.log(`Withdrawn: ${amount}`);
+          } else {
+              console.log(`Insufficient balance to withdraw ${amount}`);
+          }
+      } else {
+          console.log('Withdrawal amount must be positive');
+      }
+  }
+
+  // Getter to retrieve the current balance
+  getBalance() {
+      return this.#balance;
+  }
+}
+
+// Task 10 : Create an instance of the account and test the deposit and withdrawal methods, logging the balance after each transaction.
+const account = new Account(1000);
+console.log(`Initial Balance: ${account.getBalance()}`);
+account.deposit(500);
+console.log(`Balance after deposit: ${account.getBalance()}`);
+account.withdraw(2000);
+console.log(`Balance after withdrawal: ${account.getBalance()}`);
+account.withdraw(300);
+console.log(`Balance after another withdrawal: ${account.getBalance()}`);
+
