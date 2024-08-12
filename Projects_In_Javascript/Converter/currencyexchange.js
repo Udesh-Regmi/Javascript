@@ -163,7 +163,6 @@ const urlcurr = "https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/c
 const dropdown = document.querySelectorAll(".flag select")
 const btn = document.querySelector("#exchange")
 
-
 for (let select of dropdown) {
     for (key in countryList) {
         let newopt = document.createElement("option")
