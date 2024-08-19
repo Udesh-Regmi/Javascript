@@ -1,13 +1,23 @@
 import fetchWeatherApi from './Weather_Fetch.js';
 import { config } from './config.js';
+
 // Select elements
-const detectLocationBtn = document.querySelector(".detect-location");
-const mapIframe = document.querySelector("iframe");
-const cityElement = document.querySelector(".city");
-const temperatureElement = document.querySelector(".temperature");
+const elements = {
+    detectLocationBtn: document.querySelector(".detect-location"),
+    mapIframe: document.querySelector("iframe"),
+    formattedData: document.querySelector('.formattedData'),
+    city: document.querySelector(".city"),
+    // temperature: document.querySelector(".temperature"),
+    // country: document.querySelector('.country'),
+    // district: document.querySelector('.district'),
+    // municipality: document.querySelector('.municipality'),
+    // state: document.querySelector('.state'),
+    // placeName: document.querySelector('.placeName'),
+    // neighbourPlace: document.querySelector('.neighbourPlace')
+};
 
 // Event Listener
-detectLocationBtn.addEventListener("click", getLocationUser);
+elements.detectLocationBtn.addEventListener("click", getLocationUser);
 
 // Main function to get user location
 function getLocationUser() {
@@ -21,16 +31,30 @@ function getLocationUser() {
 // Handle successful location retrieval
 async function showPosition(position) {
     const { latitude, longitude } = position.coords;
-    const mapUrl = `https://www.google.com/maps?q=${latitude},${longitude}&hl=es;z=14&output=embed`;
-    mapIframe.src = mapUrl;
+    updateMapIframe(latitude, longitude);
 
     try {
-        const { city, timezone } = await getCityAndTimezone(latitude, longitude);
-        cityElement.textContent = city;
-        await fetchWeatherData(latitude, longitude, timezone);
-        await fetchTimezonePhoto(city);
+        const locationData = await getCityAndTimezone(latitude, longitude);
+        updateLocationElements(locationData);
+        await fetchWeatherData(latitude, longitude, locationData.timezone);
+        await fetchTimezonePhoto(locationData.city);
     } catch (error) {
         console.error('Error handling position:', error);
+    }
+}
+
+// Update Google Maps iframe
+function updateMapIframe(latitude, longitude) {
+    const mapUrl = `https://www.google.com/maps?q=${latitude},${longitude}&hl=es;z=14&output=embed`;
+    elements.mapIframe.src = mapUrl;
+}
+
+// Update location-related DOM elements using a loop
+function updateLocationElements(locationData) {
+    for (const key in locationData) {
+        if (elements[key]) {
+            elements[key].textContent = locationData[key];
+        }
     }
 }
 
@@ -45,33 +69,94 @@ function showError(error) {
     alert(messages[error.code] || "An unknown error occurred.");
 }
 
-async function getCityAndTimezone(latitude, longitude) {
-    const apiKey = config.GEOAPIFY_KEY;  // Replace with your actual Geoapify API key
-    const geocodeUrl = `https://api.geoapify.com/v1/geocode/reverse?lat=${latitude}&lon=${longitude}&apiKey=${apiKey}`;
-    
+
+// Add event listener for search functionality
+const searchInput = document.getElementById('location-search');
+const searchButton = document.querySelector('.search button');
+
+searchButton.addEventListener('click', async (event) => {
+    event.preventDefault();
+    const location = searchInput.value.trim();
+
+    if (location) {
+        try {
+            const geocodeData = await getCoordinatesFromLocation(location);
+            if (geocodeData) {
+                const { latitude, longitude } = geocodeData;
+                updateMapIframe(latitude, longitude);
+
+                const locationData = await getCityAndTimezone(latitude, longitude);
+                updateLocationElements(locationData);
+                await fetchWeatherData(latitude, longitude, locationData.timezone);
+                await fetchTimezonePhoto(locationData.city);
+            } else {
+                alert("Location not found. Please try another search term.");
+            }
+        } catch (error) {
+            console.error('Error fetching location data:', error);
+        }
+    } else {
+        alert("Please enter a location to search.");
+    }
+});
+
+// Function to get coordinates from a location name using Geoapify or any other geocoding API
+async function getCoordinatesFromLocation(location) {
+    const apiKey = config.GEOAPIFY_KEY;
+    const geocodeUrl = `https://api.geoapify.com/v1/geocode/search?text=${encodeURIComponent(location)}&apiKey=${apiKey}`;
+
     try {
         const response = await fetch(geocodeUrl);
         const data = await response.json();
-        console.log(data)
-        const address = data.features[0].properties || {};
-        const city = address.city || address.town || address.village || "City not found";
-        const timezone = address.timezone || "UTC";
-        console.log(city, timezone)
-        return { city, timezone };
+        if (data.features && data.features.length > 0) {
+            const { lat, lon } = data.features[0].properties;
+            return { latitude: lat, longitude: lon };
+        } else {
+            console.error("No geocode data found.");
+            return null;
+        }
+    } catch (error) {
+        console.error("Error fetching coordinates from location:", error);
+        throw error;
+    }
+}
+
+// Get city and timezone using reverse geocoding
+async function getCityAndTimezone(latitude, longitude) {
+    const apiKey = config.GEOAPIFY_KEY;
+    const geocodeUrl = `https://api.geoapify.com/v1/geocode/reverse?lat=${latitude}&lon=${longitude}&apiKey=${apiKey}`;
+
+    try {
+        const response = await fetch(geocodeUrl);
+        const data = await response.json();
+        const address = data.features[0].properties;
+        return {
+            formattedData: address.formatted || "Formatted data not found",
+            city: address.city || address.village || "City not found",
+            // country: address.country || "No country detected",
+            // district: address.district || "District not found",
+            // municipality: address.municipality || "Municipality not found",
+            // state: address.state || "State not found",
+            // placeName: address.suburb || "Place not found",
+            // neighbourPlace: address.neighbourhood || "Neighbour not found",
+            // timezone: address.timezone || "UTC"
+        };
     } catch (error) {
         console.error("Error fetching city and timezone:", error);
         throw error;
     }
 }
+
 // Fetch an image from Unsplash based on the city
 async function fetchTimezonePhoto(cityName) {
     const url = `https://api.unsplash.com/search/photos?query=${cityName}&client_id=${config.UNSPLASH_ACCESS_KEY}`;
     try {
         const response = await fetch(url);
         const data = await response.json();
-        if (data && data[0] && data[0].urls) {
-            console.log(`Image URL: ${data[0].urls.regular}`);
-            // Update DOM or use image URL as needed
+        if (data.results && data.results[0] && data.results[0].urls) {
+            console.log(`Image URL: ${data.results[0].urls.regular}`);
+         const imageElem=   document.querySelector('.image-location >img ')
+         imageElem.src= data.results[0].urls.regular
         } else {
             console.error("No images found.");
         }
@@ -92,11 +177,9 @@ async function fetchWeatherData(latitude, longitude, timezone) {
 
     try {
         const data = await fetchWeatherApi(`${url}?${params}`);
-        console.log(data);
         if (data && data.hourly && data.hourly.temperature_2m) {
-            const averageTemperature = data.hourly.temperature_2m.reduce((sum, temp) => sum + temp, 0) / data.hourly.temperature_2m.length;
-            temperatureElement.textContent = `Average Temperature: ${averageTemperature.toFixed(2)} °C`;
-                   
+            const averageTemperature = calculateAverageTemperature(data.hourly.temperature_2m);
+            elements.temperature.textContent = `Average Temperature: ${averageTemperature.toFixed(2)} °C`;
         } else {
             console.error("Invalid weather data.");
         }
@@ -104,3 +187,9 @@ async function fetchWeatherData(latitude, longitude, timezone) {
         console.error('Error fetching weather data:', error.message, error.stack);
     }
 }
+
+// Calculate average temperature
+function calculateAverageTemperature(temperatures) {
+    return temperatures.reduce((sum, temp) => sum + temp, 0) / temperatures.length;
+}
+

@@ -8,56 +8,76 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body class="bg-gray-900">
-    <div class="hero-container flex flex-col max-h-screen" id="home-page">
-        <div class="navbar">
-            <nav class="w-full bg-slate-200 p-2 sticky">
-                <ul class="flex justify-end space-x-6 md:space-x-12">
-                    <li><a href="#home-page" class="text-gray-700 hover:text-gray-900">Home</a></li>
+<body class="bg-gray-900 text-white">
+    <div class="hero-container flex flex-col min-h-screen" id="home-page">
+        <header class="navbar bg-slate-800">
+            <nav class="container mx-auto flex justify-between items-center p-4">
+                <div class="text-xl font-semibold text-white">WeatherApp</div>
+                <ul class="flex space-x-6">
+                    <li><a href="#home-page" class="hover:text-gray-400">Home</a></li>
                     <li><a href="https://www.github.com/Udesh-Regmi" target="_blank"
-                            class="text-gray-700 hover:text-gray-900">Github</a></li>
+                            class="hover:text-gray-400">GitHub</a></li>
                     <li><a href="https://www.linkedin.com/in/udesh-regmi/" target="_blank"
-                            class="text-gray-700 hover:text-gray-900">LinkedIn</a></li>
+                            class="hover:text-gray-400">LinkedIn</a></li>
                 </ul>
             </nav>
-        </div>
-        <div class="main-container flex flex-col flex-1 justify-center p-2 md:p-2 lg:p-2">
-            <div class="user-location-box flex flex-row items-center justify-evenly mt-2">
-                <div class="search flex flex-row gap-2">
-                    <input class="border border-black p-2 pr-4 pl-4 text-center align-center rounded-xl" type="search"
-                        name="q" placeholder="Search location" id="location-search">
-                    <button type="submit " class=" border border-transparent pr-2 pl-2 rounded-xl"><img
-                            src="https://img.icons8.com/?size=40&id=82712&format=png&color=FFFFFF" alt="SearchBox">
-                    </button>
+        </header>
 
+        <main class="flex-grow container mx-auto p-4">
+            <div class="user-location-box flex justify-between items-center mb-6">
+                <div class="search flex items-center gap-2">
+                    <input class="border border-gray-700 bg-gray-800 text-white p-2 rounded-lg focus:outline-none"
+                        type="search" name="q" placeholder="Search location" id="location-search">
+                    <button type="submit" class="bg-blue-600 p-2 rounded-lg hover:bg-blue-700">
+                        <img src="https://img.icons8.com/?size=30&id=82712&format=png&color=FFFFFF" alt="Search">
+                    </button>
                 </div>
                 <button type="button"
-                    class="detect-location bg-black text-white border border-slate-200 py-2 px-2  rounded-xl hover:bg-slate-900">Detect
+                    class="detect-location bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700">Detect
                     Location</button>
             </div>
-            <div class="two-boxes flex flex-col md:flex-row  ">
-                <div class="weather-box flex-1  p-3">
-                    <div class="box1 p-4 h-64 md:h-[75vh] md:w-[60vw] bg-gradient-to-r from-sky-500 to-indigo-500">
-                        <div class="city"></div>
-                        <div class="temperature">
-                            
+
+            <div class="two-boxes flex flex-col md:flex-row gap-6">
+                <!-- Weather and Location Info Box -->
+                <div class="weather-box flex-1 p-4 bg-gradient-to-r from-sky-500 to-indigo-500 rounded-lg">
+                    <div class="location-wrapper mb-4 flex justify-between align-center">
+                        <div class="location-details text-white space-y-2">
+                            <div class="formattedData text-2xl font-bold"></div>
+                            <!-- <div class="country text-lg"></div>
+                            <div class="district text-lg"></div>
+                            <div class="municipality text-lg"></div>
+                            <div class="state text-lg"></div>
+                            <div class="neighbourPlace text-lg"></div>
+                            <div class="placeName text-lg"></div>
+                            <div class="city text-lg"></div> -->
                         </div>
-                        <div class="weather-details"></div>
+                    </div>
+                    <div class="image-location mb-4">
+                        <img class="rounded-lg shadow-lg" src="https://media.istockphoto.com/id/461235259/photo/stupa-in-swayambhunath-monkey-temple-kathmandu-nepal.jpg?s=612x612&w=0&k=20&c=12X7zilZ0k9EGWF5szldIWsnBCO7arJ-MkIlWOap-l4="
+                            alt="Location Image">
+                    </div>
+                    <div class="weather-details text-white">
+                        <!-- Weather information will be populated here -->
                     </div>
                 </div>
-                <div class="map-box flex-1  p-4">
-                    <div class="iframe-box flex items-center justify-center h-64 md:h-[75vh]">
+
+                <!-- Map Box -->
+                <div class="map-box flex-1 p-4 bg-gray-800 rounded-lg">
+                    <div class="iframe-box h-full">
                         <iframe
                             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3532.5765641962253!2d85.28841781506135!3d27.714929682785096!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eb1907a1a997d7%3A0x27b1e7e18b00d42f!2sSwayambhunath!5e0!3m2!1sen!2snp!4v1690973248752!5m2!1sen!2snp"
-                            class="w-full h-full" frameborder="0" style="border:0" allowfullscreen></iframe>
+                            class="w-full h-full rounded-lg shadow-lg" frameborder="0" style="border:0"
+                            allowfullscreen></iframe>
                     </div>
                 </div>
             </div>
+        </main>
 
-        </div>
-        <div class="footer bg-black h-7 md:h-7 text-white flex align-center justify-center">Copyright © by Udesh Regmi
-        </div>
+        <footer class="bg-gray-800 p-4 text-center">
+            <p class="text-sm text-gray-500">&copy; 2024 by Udesh Regmi. All rights reserved.</p>
+        </footer>
     </div>
+
     <script type="module" src="./index.js"></script>
 </body>
 

@@ -3,6 +3,7 @@ export default async function fetchWeatherApi(url, params) {
         const queryString = new URLSearchParams(params).toString();
         const response = await fetch(`${url}?${queryString}`);
         const data = await response.json();
+        console.log(data)
         return processWeatherData(data);
     } catch (error) {
         console.error('Error fetching weather data:', error);
@@ -11,7 +12,7 @@ export default async function fetchWeatherApi(url, params) {
 }
 
 function processWeatherData(data) {
-    const { hourly, ...datas } = data;
+    const { hourly, ...datasss } = data;
 
   
     return {
