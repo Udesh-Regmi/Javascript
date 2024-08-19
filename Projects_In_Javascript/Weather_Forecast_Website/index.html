@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Forecast Application</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-900">
+    <div class="hero-container flex flex-col max-h-screen" id="home-page">
+        <div class="navbar">
+            <nav class="w-full bg-slate-200 p-2 sticky">
+                <ul class="flex justify-end space-x-6 md:space-x-12">
+                    <li><a href="#home-page" class="text-gray-700 hover:text-gray-900">Home</a></li>
+                    <li><a href="https://www.github.com/Udesh-Regmi" target="_blank"
+                            class="text-gray-700 hover:text-gray-900">Github</a></li>
+                    <li><a href="https://www.linkedin.com/in/udesh-regmi/" target="_blank"
+                            class="text-gray-700 hover:text-gray-900">LinkedIn</a></li>
+                </ul>
+            </nav>
+        </div>
+        <div class="main-container flex flex-col flex-1 justify-center p-2 md:p-2 lg:p-2">
+            <div class="user-location-box flex flex-row items-center justify-evenly mt-2">
+                <div class="search flex flex-row gap-2">
+                    <input class="border border-black p-2 pr-4 pl-4 text-center align-center rounded-xl" type="search"
+                        name="q" placeholder="Search location" id="location-search">
+                    <button type="submit " class=" border border-transparent pr-2 pl-2 rounded-xl"><img
+                            src="https://img.icons8.com/?size=40&id=82712&format=png&color=FFFFFF" alt="SearchBox">
+                    </button>
+
+                </div>
+                <button type="button"
+                    class="detect-location bg-black text-white border border-slate-200 py-2 px-2  rounded-xl hover:bg-slate-900">Detect
+                    Location</button>
+            </div>
+            <div class="two-boxes flex flex-col md:flex-row  ">
+                <div class="weather-box flex-1  p-3">
+                    <div class="box1 p-4 h-64 md:h-[75vh] md:w-[60vw] bg-gradient-to-r from-sky-500 to-indigo-500">
+                        <div class="city"></div>
+                        <div class="temperature">
+                            
+                        </div>
+                        <div class="weather-details"></div>
+                    </div>
+                </div>
+                <div class="map-box flex-1  p-4">
+                    <div class="iframe-box flex items-center justify-center h-64 md:h-[75vh]">
+                        <iframe
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3532.5765641962253!2d85.28841781506135!3d27.714929682785096!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eb1907a1a997d7%3A0x27b1e7e18b00d42f!2sSwayambhunath!5e0!3m2!1sen!2snp!4v1690973248752!5m2!1sen!2snp"
+                            class="w-full h-full" frameborder="0" style="border:0" allowfullscreen></iframe>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="footer bg-black h-7 md:h-7 text-white flex align-center justify-center">Copyright © by Udesh Regmi
+        </div>
+    </div>
+    <script type="module" src="./index.js"></script>
+</body>
+
+</html>
