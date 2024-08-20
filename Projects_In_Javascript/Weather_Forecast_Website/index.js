@@ -1,4 +1,4 @@
-import fetchWeatherApi from './Weather_Fetch.js';
+import fetchWeatherData from './WeatherData.js';
 import { config } from './config.js';
 
 // Select elements
@@ -16,7 +16,6 @@ const elements = {
     // neighbourPlace: document.querySelector('.neighbourPlace')
 };
 
-// Event Listener
 elements.detectLocationBtn.addEventListener("click", getLocationUser);
 
 // Main function to get user location
@@ -36,7 +35,7 @@ async function showPosition(position) {
     try {
         const locationData = await getCityAndTimezone(latitude, longitude);
         updateLocationElements(locationData);
-        await fetchWeatherData(latitude, longitude, locationData.timezone);
+        await fetchWeatherData(latitude, longitude);
         await fetchTimezonePhoto(locationData.city);
     } catch (error) {
         console.error('Error handling position:', error);
@@ -87,7 +86,7 @@ searchButton.addEventListener('click', async (event) => {
 
                 const locationData = await getCityAndTimezone(latitude, longitude);
                 updateLocationElements(locationData);
-                await fetchWeatherData(latitude, longitude, locationData.timezone);
+                await fetchWeatherData(latitude, longitude);
                 await fetchTimezonePhoto(locationData.city);
             } else {
                 alert("Location not found. Please try another search term.");
@@ -154,7 +153,7 @@ async function fetchTimezonePhoto(cityName) {
         const response = await fetch(url);
         const data = await response.json();
         if (data.results && data.results[0] && data.results[0].urls) {
-            console.log(`Image URL: ${data.results[0].urls.regular}`);
+            // console.log(`Image URL: ${data.results[0].urls.regular}`);
          const imageElem=   document.querySelector('.image-location >img ')
          imageElem.src= data.results[0].urls.regular
         } else {
@@ -164,32 +163,3 @@ async function fetchTimezonePhoto(cityName) {
         console.error("Error fetching the image:", error);
     }
 }
-
-// Fetch weather data using a weather API
-async function fetchWeatherData(latitude, longitude, timezone) {
-    const url = "https://api.open-meteo.com/v1/forecast";
-    const params = new URLSearchParams({
-        latitude,
-        longitude,
-        hourly: "temperature_2m",
-        timezone
-    }).toString();
-
-    try {
-        const data = await fetchWeatherApi(`${url}?${params}`);
-        if (data && data.hourly && data.hourly.temperature_2m) {
-            const averageTemperature = calculateAverageTemperature(data.hourly.temperature_2m);
-            elements.temperature.textContent = `Average Temperature: ${averageTemperature.toFixed(2)} °C`;
-        } else {
-            console.error("Invalid weather data.");
-        }
-    } catch (error) {
-        console.error('Error fetching weather data:', error.message, error.stack);
-    }
-}
-
-// Calculate average temperature
-function calculateAverageTemperature(temperatures) {
-    return temperatures.reduce((sum, temp) => sum + temp, 0) / temperatures.length;
-}
-
