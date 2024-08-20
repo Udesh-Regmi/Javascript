@@ -37,7 +37,7 @@ To run this application locally, follow these steps:
 1. **Clone the Repository:**
 
    ```bash
-   git clone https://github.com/your-repository-url.git
+   git clone https://github.com/Udesh-Regmi/Javascript
    ```
 
 2. **Navigate to the Project Directory:**
