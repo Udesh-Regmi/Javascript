@@ -42,7 +42,7 @@ Welcome to the AI Chatbot project! This project showcases a user-friendly chatbo
 
 ## 🌐 Demo
 
-Check out the live demo here: [AI Chatbot Demo](https://github.com/Udesh-Regmi/Javascript/tree/main/Projects_In_Javascript/AI_ChatBot)
+Check out the live demo here: [AI Chatbot Demo](https://udesh-regmi.github.io/Javascript/Projects_In_Javascript/AI_ChatBot/index.html)
 
 ## 🖼️ Project Structure
 
