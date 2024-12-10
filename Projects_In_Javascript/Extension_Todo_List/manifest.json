@@ -1,0 +1,13 @@
+{
+    "manifest_version": 3,
+    "name": "Dynamic Todo List",
+    "version": "1.0",
+    "description": "A dynamic todo list and productivity tracker as a Chrome extension.",
+    "permissions": ["storage"],
+    "host_permissions": ["*://*/*"],
+    "chrome_url_overrides": {
+      "newtab": "index.html"
+    }
+ 
+  }
+  

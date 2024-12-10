@@ -1,0 +1,143 @@
+/* General Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #000000, #048ba0);
+    color: #fff;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .app {
+    background: rgba(255, 255, 255, 0);
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.89);
+    width: 60vw;
+    text-align: center;
+  }
+  
+  h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  /* Progress Bar */
+  .progress-container {
+    margin: 20px;
+  }
+  
+  #progress-bar {
+    width: 100%;
+    appearance: none;
+    height: 10px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.2);
+    overflow: hidden;
+  }
+  
+  #progress-bar::-webkit-progress-value {
+    background: linear-gradient(90deg, #1da518, #4caf50);
+    border-radius: 10px;
+  }
+  
+  #progress-bar::-moz-progress-bar {
+    background: linear-gradient(90deg, #13b155, #4caf50);
+  }
+  
+  #progress-text {
+    display: block;
+    margin-top: 5px;
+    font-size: 14px;
+    color:#fff
+  }
+  
+  /* Todo Input */
+  .todo-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+  }
+  
+  #new-todo-input {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+  }
+  
+  #add-todo-btn {
+    padding: 10px 15px;
+    background: #0a44e4;
+    border: transparent;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  #add-todo-btn:hover {
+    background: #0232d1;
+  }
+  
+#todo-list {
+  margin-top: 20px;
+  list-style: none;
+  padding: 10px;
+  max-height: 350px; 
+  overflow-y: auto; 
+  background: rgba(0, 0, 0, 0.1); 
+  border-radius: 20px;
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2); /* Optional: a subtle shadow inside */
+}
+
+  .todo-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #c21508;
+    padding: 15px 15px;
+    border-radius: 12px;
+    margin: 10px;
+    transition: background 0.3s ease;
+
+
+  
+  }
+  
+  .todo-item.checked {
+    background: #09a00ee5;
+  }
+  
+  .todo-checkbox {
+    transform: scale(1.5);
+    margin-right: 10px;
+  }
+  
+  .todo-text {
+    flex: 1;
+    text-align: left;
+  }
+  
+  .edit-btn, .delete-btn {
+    background: transparent;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    transition: transform 0.2s ease;
+  }
+  
+  .edit-btn:hover {
+    color: #ecb613;
+    transform: scale(1.5);
+  }
+  
+  .delete-btn:hover {
+    color: #470500;
+    transform: scale(1.5);
+  }
+  
