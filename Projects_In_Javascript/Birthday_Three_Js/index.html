@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Special Birthday Surprise</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+      }
+      canvas {
+        display: block;
+      }
+      .button-container {
+        z-index: 1000;
+      }
+      .question-text {
+        font-family: "Courier New", Courier, monospace;
+        color: #ffffff;
+      }
+      .gif-container {
+        width: 300px;
+        height: 200px;
+        margin: 20px auto;
+        border-radius: 10px;
+        overflow: hidden;
+      }
+      
+      .gif-container img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      
+      }
+
+      .photo-book {
+        display: none;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 90vw;
+        max-width: 800px; /* Set a maximum width */
+        height: auto;
+        max-height: 90vh;
+        background: rgba(255, 255, 255, 0.1);
+        z-index: 2000;
+        border-radius: 20px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+      }
+      .photo-description {
+        font-family: "Courier New", Courier, monospace;
+        color: #ffffff;
+      }
+      .image-container {
+        width: calc(
+          100% * (9 / 16)
+        ); /* Maintain the width for the aspect ratio */
+        height: calc(
+          100% * (16 / 9)
+        ); /* Maintain the height for the aspect ratio */
+        border-radius: 50%; /* Circular image */
+        overflow: hidden; /* Ensure no overflow */
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); /* Shadow for depth */
+        display: flex; /* Center the image */
+        justify-content: center;
+        align-items: center;
+      }
+      #current-photo {
+        width: auto; /* Allow auto width */
+        height: 100%; /* Fill height */
+      }
+      .nav-button {
+        position: fixed;
+        top: 50%;
+        transform: translateY(-50%);
+        background-color: rgba(0, 0, 255, 0.7);
+        color: white;
+        padding: 10px;
+        border-radius: 5px;
+        font-weight: bold;
+      }
+      #prev-btn {
+        left: 10px; /* Position on the left */
+      }
+      #next-btn {
+        right: 10px; /* Position on the right */
+      }
+      #video-iframe {
+        display: none;
+      }
+    </style>
+  </head>
+  <body class="bg-black">
+    <div
+      id="question-container"
+      class="fixed top-1/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center z-10"
+    >
+      <h1 id="question-text" class="text-white text-3xl sm:text-4xl lg:text-5xl mb-8 font-bold">
+        Do you really  want to see what's inside ?
+      </h1>
+      <div id="gif-container" class="gif-container hidden">
+        <img id="question-gif" src="" alt="Question GIF" />
+      </div>
+      <div class="button-container flex gap-4 justify-center flex-wrap">
+        <button
+          id="yes-btn"
+          class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg w-full sm:w-auto"
+        >
+          Yes, of course!
+        </button>
+        <button
+          id="no-btn"
+          class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-lg w-full sm:w-auto"
+        >
+          No, why do i care 
+        </button>
+      </div>
+      </div>
+
+    <div id="photo-book" class="photo-book p-4 sm:p-8 lg:p-16 mx-auto">
+      <div
+        class="text-white text-3xl sm:text-4xl lg:text-5xl text-center mb-4 flex items-center justify-center space-x-4"
+      >
+        <span>Happy Birthday Beautiful </span>
+        <span>
+          <iframe
+            id="video-iframe"
+            class="rounded-full border-5 border-solid border-white w-12 h-12"
+            src="https://www.youtube.com/embed/UWMJtxeIOAQ?autoplay=1&si=1UWEC6sExR8EPt3l&amp;start=29"
+            title="YouTube video player"
+            frameborder="0"
+            allow="autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen
+          >
+          </iframe>
+        </span>
+      </div>
+
+      <div id="book-content" class="w-full h-full overflow-hidden relative">
+        <div
+          id="page-content"
+          class="flex flex-col items-center p-4 sm:p-8 lg:p-0"
+        >
+          <!-- Image container with circular shape -->
+          <div class="image-container mb-4">
+            <img id="current-photo" class="object-cover h-full" />
+            <!-- Maintain height -->
+          </div>
+          <p
+            id="photo-description"
+            class="photo-description text-lg sm:text-xl font-serif italic text-center mt-4 px-2"
+          >
+            Your Description Here
+          </p>
+        </div>
+
+        <!-- Fixed navigation buttons (Prev and Next) -->
+        <button id="prev-btn" class="nav-button">&lt;</button>
+        <button id="next-btn" class="nav-button">&gt;</button>
+      </div>
+    </div>
+
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://cdn.jsdelivr.net/npm/three@0.172.0/build/three.module.js",
+          "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.172.0/examples/jsm/"
+        }
+      }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.7.1/gsap.min.js"></script>
+
+    <!-- Your custom script -->
+    <script type="module" >
+      import * as THREE from "three";
+      import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+      import { FontLoader } from "three/addons/loaders/FontLoader.js";
+      import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
+      // Scene setup
+      const scene = new THREE.Scene();
+
+      scene.background = new THREE.Color(0x1010101);
+
+      const camera = new THREE.PerspectiveCamera(
+        75,
+        window.innerWidth / window.innerHeight,
+        0.5,
+        1000
+      );
+      camera.position.set(0, 5, 20);
+
+      const renderer = new THREE.WebGLRenderer({ antialias: true });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.shadowMap.enabled = true;
+      document.body.appendChild(renderer.domElement);
+
+      // Controls
+      const controls = new OrbitControls(camera, renderer.domElement);
+      controls.enableDamping = true;
+      controls.enabled = false; // Initially disabled
+
+      // Lighting
+      const ambientLight = new THREE.AmbientLight(0x000000, 0.5);
+      scene.add(ambientLight);
+
+      const spotLight = new THREE.SpotLight(0x00000f, 1);
+      spotLight.position.set(15, 20, 10);
+      spotLight.castShadow = true;
+      scene.add(spotLight);
+
+      const noBtn = document.getElementById("no-btn");
+
+      noBtn.addEventListener("mouseover", () => {
+        // Get the button's current position and size
+        const rect = noBtn.getBoundingClientRect();
+        const buttonWidth = rect.width;
+        const buttonHeight = rect.height;
+        const currentX = rect.left;
+        const currentY = rect.top;
+
+        // Get window dimensions
+        const windowWidth = window.innerWidth;
+        const windowHeight = window.innerHeight;
+
+        // Movement range for 10px in any direction
+        const moveRange = 10;
+
+        // Calculate the new position ensuring it stays within window boundaries
+        const newX = Math.max(
+          0, // Prevent the button from moving out of the left edge
+          Math.min(
+            windowWidth - buttonWidth, // Prevent the button from moving out of the right edge
+            currentX + (Math.random() * moveRange * 2 - moveRange) // Move by random amount within range
+          )
+        );
+
+        const newY = Math.max(
+          0, // Prevent the button from moving out of the top edge
+          Math.min(
+            windowHeight - buttonHeight, // Prevent the button from moving out of the bottom edge
+            currentY + (Math.random() * moveRange * 2 - moveRange) // Move by random amount within range
+          )
+        );
+
+        // Use GSAP to animate the button to the new position
+        gsap.to(noBtn, {
+          left: newX,
+          top: newY,
+          position: "fixed",
+          duration: 0.1,
+          ease: "power2.out",
+        });
+      });
+
+
+      const questions = [
+  {
+    text: "There may be nothing, Are you sure you want to proceed?",
+    gif: "https://media2.giphy.com/media/xT9KVmIOQXXXLhrwNa/100.webp?cid=790b76117auwqg4fr7sw5kvo8zu3skcu0he5uhabq37ghulb&ep=v1_gifs_search&rid=100.webp&ct=g"
+  },
+  {
+    text: "Okay Fine! If you insist that much then Let's go.",
+    gif: "https://media1.giphy.com/media/h20lkWNZWpPAgx7vW4/200.webp?cid=790b7611vf7mm6c7ermf68eglqmsyww1ef250n0cv84n9var&ep=v1_gifs_search&rid=200.webp&ct=g"
+  },
+  {
+    text: "Do you really think there is anything.",
+    gif: "https://media2.giphy.com/media/QhU5O256XTFDv0Hmyr/giphy.webp?cid=790b7611blzocld1o1jtql70c2719u31ypx2gzf0jtf5pi1y&ep=v1_gifs_search&rid=giphy.webp&ct=g"
+  },
+  {
+    text: "Okay Clever hmm!",
+    gif: "https://media0.giphy.com/media/88iYsvbegSUn9bSTF8/giphy.webp?cid=790b76113ke6ew94zfghws0onog24dkmrd1cn3r6kns3lpit&ep=v1_gifs_search&rid=giphy.webp&ct=g"
+  },
+  {
+    text: "I told you there is nothing!",
+    gif: "https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExaXRjOXRrbXkyZ3Jhczc0NmlxMWJxcGpybXpzMDhnN2NrMDdjeTZsaSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/GbPru204dTDfG/200.webp"
+  }
+];
+
+      let currentQuestionIndex = 0;
+      const questionText = document.getElementById("question-text");
+      const gifContainer = document.getElementById("gif-container");
+      const questionGif = document.getElementById("question-gif");
+      function showNextQuestion() {
+        if (currentQuestionIndex < questions.length) {
+          const currentQuestion = questions[currentQuestionIndex];
+          
+          // Update question text with fade effect
+          gsap.to(questionText, {
+            opacity: 0,
+            duration: 0.5,
+            onComplete: () => {
+              questionText.textContent = currentQuestion.text;
+              gsap.to(questionText, {
+                opacity: 1,
+                duration: 0.5
+              });
+            }
+          });    // Show and update GIF with fade effect
+          gifContainer.classList.remove('hidden');
+          gsap.to(questionGif, {
+            opacity: 0,
+            duration: 0.5,
+            onComplete: () => {
+              questionGif.src = currentQuestion.gif;
+              gsap.to(questionGif, {
+                opacity: 1,
+                duration: 0.5
+              });
+            }
+          });
+
+          currentQuestionIndex++;
+        } else {
+          // When all questions are done, proceed with the original functionality
+          document.getElementById("question-container").style.display = "none";
+          const iframe = document.getElementById("video-iframe");
+          iframe.style.display = "block";
+          iframe.src = "https://www.youtube.com/embed/UWMJtxeIOAQ?autoplay=1&start=29";
+          controls.enabled = true;
+          document.getElementById("photo-book").style.display = "block";
+          initPhotoBook();
+          createFloatingShapes();
+        }
+      }
+      
+
+
+      // Yes button functionality
+      const yesBtn = document.getElementById("yes-btn");
+      yesBtn.addEventListener("click", async () => {
+        if (currentQuestionIndex < questions.length) {
+          showNextQuestion();
+        }else{
+        document.getElementById("question-container").style.display = "none";
+        const iframe = document.getElementById("video-iframe");
+        iframe.style.display = "block";
+
+        // Set the video URL to autoplay when the button is pressed
+        iframe.src =
+          "https://www.youtube.com/embed/UWMJtxeIOAQ?autoplay=1&start=29"; // Enable controls
+        controls.enabled = true;
+
+        // Show photo book
+        document.getElementById("photo-book").style.display = "block";
+
+        // Initialize photo book
+        await initPhotoBook();
+
+        // Add floating hearts
+        createFloatingShapes();
+
+        }
+
+
+        
+      });
+
+      // Photo book functionality
+      let currentPhotoIndex = 0;
+      let photosData = [
+  {
+    "url": "https://images.unsplash.com/photo-1558636508-e0db3814bd1d?w=500",
+    "description": "A beautiful birthday cake with sparkly candles and colorful sprinkles"
+  },
+  {
+    "url": "https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?w=500",
+    "description": "Friends laughing together at a surprise birthday party"
+  },
+  {
+    "url": "https://images.unsplash.com/photo-1561912774-79769a0a0a7a?w=500",
+    "description": "Vintage birthday celebration with classic decorations and party hats"
+  },
+  {
+    "url": "https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=500",
+    "description": "Colorful balloon arch creating a magical birthday entrance"
+  },
+  {
+    "url": "https://images.unsplash.com/photo-1573495782952-e42bd3ea5a4d?w=500",
+    "description": "A moment of joy as birthday wishes are made"
+  },
+  {
+    "url": "https://images.unsplash.com/photo-1514845505178-849cebf1a91d?w=500",
+    "description": "Elegant birthday dinner setup with golden decorations"
+  },
+  {
+    "url": "https://images.unsplash.com/photo-1531956531700-dc0ee0f1f9a5?w=500",
+    "description": "Precious family moments captured during birthday celebrations"
+  },
+  {
+    "url": "https://images.unsplash.com/photo-1513151233558-d860c5398176?w=500",
+    "description": "Fun party games bringing smiles to everyone's faces"
+  },
+  {
+    "url": "https://images.unsplash.com/photo-1527529482837-4698179dc6ce?w=500",
+    "description": "Sweet birthday memories with best friends forever"
+  },
+  {
+    "url": "https://images.unsplash.com/photo-1516550893923-42d28e5677af?w=500",
+    "description": "A perfect birthday picnic in the park under sunny skies"
+  },
+  {
+    "url": "https://images.unsplash.com/photo-1590217367971-2c0d8d51d3d7?w=500",
+    "description": "Candid laughter during birthday gift opening moments"
+  },
+  {
+    "url": "https://images.unsplash.com/photo-1464347744102-11db6282f854?w=500",
+    "description": "Dancing and celebrating with loved ones"
+  },
+  {
+    "url": "https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=500",
+    "description": "Surprise birthday breakfast in bed with flowers"
+  },
+  {
+    "url": "https://images.unsplash.com/photo-1551972251-12070d63502a?w=500",
+    "description": "Birthday wishes written in the stars"
+  },
+  {
+    "url": "https://images.unsplash.com/photo-1527529482837-4698179dc6ce?w=500",
+    "description": "Special birthday messages from around the world"
+  },
+  {
+    "url": "https://images.unsplash.com/photo-1608790672275-309c02d888ff?w=500",
+    "description": "Childhood birthday memories that last forever"
+  },
+  {
+    "url": "https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=500",
+    "description": "Birthday adventure with closest friends"
+  },
+  {
+    "url": "https://images.unsplash.com/photo-1532117182044-031e7cd916ee?w=500",
+    "description": "Sweet sixteen celebration filled with love"
+  },
+  {
+    "url": "https://images.unsplash.com/photo-1507120878965-54b2d3939100?w=500",
+    "description": "Birthday wishes blown into the wind"
+  },
+  {
+    "url": "https://images.unsplash.com/photo-1533294455009-a77b7557d2d1?w=500",
+    "description": "Making memories that will last a lifetime"
+  },
+  {
+    "url": "https://images.unsplash.com/photo-1531956531700-dc0ee0f1f9a5?w=500",
+    "description": "Birthday surprises around every corner"
+  },
+  {
+    "url": "https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?w=500",
+    "description": "Celebrating another year of amazing adventures"
+  },
+  {
+    "url": "https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=500",
+    "description": "Birthday joy shared with special people"
+  },
+  {
+    "url": "https://images.unsplash.com/photo-1513151233558-d860c5398176?w=500",
+    "description": "Magical moments under birthday lights"
+  },
+  {
+    "url": "https://images.unsplash.com/photo-1516550893923-42d28e5677af?w=500",
+    "description": "Birthday dreams coming true one wish at a time"
+  },
+  {
+    "url": "https://images.unsplash.com/photo-1464347744102-11db6282f854?w=500",
+    "description": "Special surprises from loving friends"
+  },
+  {
+    "url": "https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=500",
+    "description": "Birthday morning filled with excitement"
+  },
+  {
+    "url": "https://images.unsplash.com/photo-1551972251-12070d63502a?w=500",
+    "description": "Celebrating achievements and new beginnings"
+  },
+  {
+    "url": "https://images.unsplash.com/photo-1527529482837-4698179dc6ce?w=500",
+    "description": "Birthday hugs from those who matter most"
+  },
+  {
+    "url": "https://images.unsplash.com/photo-1608790672275-309c02d888ff?w=500",
+    "description": "Creating new birthday traditions"
+  },
+  {
+    "url": "https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=500",
+    "description": "Special messages from around the globe"
+  },
+  {
+    "url": "https://images.unsplash.com/photo-1532117182044-031e7cd916ee?w=500",
+    "description": "Birthday love spanning distances"
+  },
+  {
+    "url": "https://images.unsplash.com/photo-1507120878965-54b2d3939100?w=500",
+    "description": "Cherished moments with family and friends"
+  },
+  {
+    "url": "https://images.unsplash.com/photo-1533294455009-a77b7557d2d1?w=500",
+    "description": "Birthday wishes carried on gentle breezes"
+  },
+  {
+    "url": "https://images.unsplash.com/photo-1531956531700-dc0ee0f1f9a5?w=500",
+    "description": "Celebrating the joy of another beautiful year"
+  },
+  {
+    "url": "https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?w=500",
+    "description": "Birthday dreams taking flight"
+  },
+  {
+    "url": "https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=500",
+    "description": "Special moments frozen in time"
+  },
+  {
+    "url": "https://images.unsplash.com/photo-1513151233558-d860c5398176?w=500",
+    "description": "Birthday love multiplied by friendship"
+  },
+  {
+    "url": "https://images.unsplash.com/photo-1516550893923-42d28e5677af?w=500",
+    "description": "Celebrating life's sweetest moments"
+  },
+  {
+    "url": "https://images.unsplash.com/photo-1464347744102-11db6282f854?w=500",
+    "description": "Birthday magic in every smile"
+  },
+  {
+    "url": "https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=500",
+    "description": "Another year of beautiful memories"
+  },
+  {
+    "url": "https://images.unsplash.com/photo-1551972251-12070d63502a?w=500",
+    "description": "Birthday wishes wrapped in love"
+  },
+  {
+    "url": "https://images.unsplash.com/photo-1527529482837-4698179dc6ce?w=500",
+    "description": "Special moments that take your breath away"
+  },
+  {
+    "url": "https://images.unsplash.com/photo-1608790672275-309c02d888ff?w=500",
+    "description": "Birthday joy multiplied by friendship"
+  },
+  {
+    "url": "https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=500",
+    "description": "Celebrating the gift of another year"
+  },
+  {
+    "url": "https://images.unsplash.com/photo-1532117182044-031e7cd916ee?w=500",
+    "description": "Birthday wishes carried on starlight"
+  },
+  {
+    "url": "https://images.unsplash.com/photo-1507120878965-54b2d3939100?w=500",
+    "description": "Special moments with special people"
+  },
+  {
+    "url": "https://images.unsplash.com/photo-1533294455009-a77b7557d2d1?w=500",
+    "description": "Birthday dreams coming true"
+  },
+  {
+    "url": "https://images.unsplash.com/photo-1531956531700-dc0ee0f1f9a5?w=500",
+    "description": "Celebrating life's precious moments"
+  },
+  {
+    "url": "https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?w=500",
+    "description": "Another year of beautiful adventures"
+  },
+  {
+    "url": "https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=500",
+    "description": "Birthday wishes wrapped in sunshine"
+  },
+  {
+    "url": "https://images.unsplash.com/photo-1513151233558-d860c5398176?w=500",
+    "description": "Celebrating the magic of friendship"
+  },
+  {
+    "url": "https://images.unsplash.com/photo-1516550893923-42d28e5677af?w=500",
+    "description": "Special moments that last forever"
+  }
+];
+
+      async function initPhotoBook() {
+        // This code is for json data only
+        // const response = await fetch("./photos.json");
+        // const data = await response.json();
+        // photosData = data.photos;
+        console.log("Photos Data:", photosData); // Check if the data is correct
+        updatePhotoBook();
+      }
+
+      function updatePhotoBook() {
+        const currentPhoto = photosData[currentPhotoIndex];
+        const photoElement = document.getElementById("current-photo");
+
+        // Apply the glassmorphism effect
+        photoElement.classList.add("glassmorphism-border");
+        photoElement.src = currentPhoto.url;
+        document.getElementById("photo-description").textContent =
+          currentPhoto.description;
+      }
+
+      document.getElementById("next-btn").addEventListener("click", () => {
+        currentPhotoIndex = (currentPhotoIndex + 1) % photosData.length;
+        updatePhotoBook();
+      });
+
+      document.getElementById("prev-btn").addEventListener("click", () => {
+        currentPhotoIndex =
+          (currentPhotoIndex - 1 + photosData.length) % photosData.length;
+        updatePhotoBook();
+      });
+
+      function createFloatingShapes() {
+        // Function to generate a random color
+        function getRandomColor() {
+          const r = Math.floor(Math.random() * 256);
+          const g = Math.floor(Math.random() * 256);
+          const b = Math.floor(Math.random() * 256);
+          return new THREE.Color(r / 255, g / 255, b / 255); // Return a THREE.Color object
+        }
+
+        // 1. Heart Shape creation function
+        function createHeartGeometry() {
+          const heartShape = new THREE.Shape();
+          heartShape.moveTo(0, 0);
+          heartShape.bezierCurveTo(0, 0.8, 0.7, 1.2, 1, 1);
+          heartShape.bezierCurveTo(1.3, 1.2, 2, 0.8, 2, 0);
+          heartShape.bezierCurveTo(2, -1.3, 1.3, -2, 1, -2);
+          heartShape.bezierCurveTo(0.7, -2, 0, -1.3, 0, 0);
+
+          const geometry = new THREE.ShapeGeometry(heartShape);
+          return geometry;
+        }
+
+        // 2. Small Dot (Sphere) creation function
+        function createDotGeometry() {
+          const geometry = new THREE.SphereGeometry(0.5, 16, 16); // Small sphere (dot)
+          return geometry;
+        }
+
+        function createEllipseGeometry() {
+          // Create an ellipse curve
+          const ellipseCurve = new THREE.EllipseCurve(
+            0,
+            0, // ax, aY
+            2,
+            1, // xRadius, yRadius
+            0,
+            Math.PI * 2, // Start and End angle
+            false, // Clockwise
+            0 // Rotation in radians
+          );
+
+          // Get points from the curve
+          const points = ellipseCurve.getPoints(50); // Get 50 points along the curve
+
+          // Create a Shape using the points
+          const shape = new THREE.Shape(points);
+
+          // Create the geometry from the shape
+          const geometry = new THREE.ShapeGeometry(shape);
+
+          return geometry;
+        }
+
+        // Create floating shapes (hearts, dots, and ellipses) in large numbers
+        const numberOfShapes = 1372; // Reasonable number for a smoother performance
+
+        for (let i = 0; i < numberOfShapes; i++) {
+          let shapeGeometry;
+          let shapeType = Math.floor(Math.random() * 3); // Randomly pick a shape type
+
+          if (shapeType === 0) {
+            shapeGeometry = createHeartGeometry();
+          } else if (shapeType === 1) {
+            shapeGeometry = createDotGeometry();
+          } else {
+            shapeGeometry = createEllipseGeometry();
+          }
+
+          const material = new THREE.MeshBasicMaterial({
+            color: getRandomColor(),
+            side: THREE.DoubleSide,
+            transparent: true,
+            opacity: 0.8,
+          });
+
+          const shape = new THREE.Mesh(shapeGeometry, material);
+
+          // Position the shape randomly in the scene
+          shape.position.set(
+            Math.random() * 200 - 100, // Random x position
+            Math.random() * 100 - 50, // Random y position
+            Math.random() * 100 - 50 // Random z position
+          );
+          shape.rotation.set(
+            Math.random() * Math.PI,
+            Math.random() * Math.PI,
+            Math.random() * Math.PI
+          );
+
+          scene.add(shape);
+
+          // Animate the shape (floating up and down)
+          gsap.to(shape.position, {
+            y: shape.position.y + Math.random() * 10,
+            duration: 2 + Math.random() * 2,
+            repeat: -1,
+            yoyo: true,
+            ease: "power1.inOut",
+          });
+
+          // Animate the shape's rotation
+          gsap.to(shape.rotation, {
+            z: shape.rotation.z + Math.PI * 2,
+            duration: 4 + Math.random() * 4,
+            repeat: -1,
+            ease: "none",
+          });
+        }
+      }
+
+      // Animation loop
+      function animate() {
+        requestAnimationFrame(animate);
+        controls.update();
+        renderer.render(scene, camera);
+      }
+
+      animate();
+
+      // Responsive handling
+      window.addEventListener("resize", () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      });
+    </script>
+  </body>
+</html>
