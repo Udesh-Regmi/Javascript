@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Countdown</title>
+    <style>
+      body {
+        margin: 0;
+        height: 100vh; /* full screen height */
+        display: flex;
+        justify-content: center; 
+        align-items: center; 
+        background: #f5f5f5;
+      }
+      .main-container {
+        width: 80%;
+        max-width: 1000px;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        background: white;
+        padding: 20px;
+        border-radius: 12px;
+      }
+      /* IMAGE */
+.left-image img {
+  width: 280px;
+  height: 280px;
+  object-fit: cover;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+/* RIGHT CONTENT */
+.right-content {
+  max-width: 500px;
+}
+
+.right-content h1 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+  color: #222;
+}
+
+.give-away-time {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 15px;
+}
+
+.give-away-time span:last-child {
+  color: #ff6b6b;
+  font-weight: 600;
+}
+
+/* DESCRIPTION */
+.right-content p {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #555;
+}
+
+/* COUNTDOWN BOX */
+.main-countdown {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+/* EACH TIME BLOCK */
+.main-countdown div {
+  background: #222;
+  color: #fff;
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  min-width: 70px;
+  text-align: center;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+/* HOVER EFFECT (subtle, not circus) */
+.main-countdown div:hover {
+  background: #ff6b6b;
+  transform: translateY(-3px);
+  transition: 0.2s ease;
+}
+
+/* RESPONSIVE (so it doesn’t collapse like your patience) */
+@media (max-width: 768px) {
+  .main-container {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .left-image img {
+    width: 100%;
+    height: auto;
+  }
+
+  .main-countdown {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+}
+    </style>
+  </head>
+  <body>
+    <div class="main-container">
+      <div class="left-image">
+        <img
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuEfX3Ui2h2vxljntu5NKMAQhDH7dTrMYpG9ypyHAYSw&s=10"
+          alt="Countdown Image"
+        />
+      </div>
+      <div class="right-content">
+        <h1>Old Iphone Giveaway</h1>
+        <div class="give-away-time">
+          <span>Giveaway ends on </span> <span id="countdown"></span>
+        </div>
+        <p>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum
+          aliquid necessitatibus obcaecati quos quibusdam maxime nulla ipsam
+          repellendus placeat earum quo nobis, quasi ex repellat molestiae
+          ratione? Excepturi aliquid nulla consequatur rerum!
+        </p>
+        <div class="main-countdown">
+          <div class="day">00</div>
+          <div class="hour">00</div>
+          <div class="minute">00</div>
+          <div class="second">00</div>
+        </div>
+      </div>
+    </div>
+    <script src="index.js"></script>
+  </body>
+</html>

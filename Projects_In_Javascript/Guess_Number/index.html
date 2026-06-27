@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guess the Number</title>
+</head>
+<body>
+
+<form id="gameForm">
+    <label for="userInput">Enter a number between 1 and 100:</label>
+    <input type="number" id="userInput" min="1" max="100" required>
+    <button type="submit">Submit</button>
+    <button type="button" id="resetBtn">Reset Game</button>
+</form>
+
+<p id="result"></p>
+<p>Your remaining guesses: <span id="remaining">10</span></p>
+<p>Previous guesses: <span id="previous"></span></p>
+
+<script>
+    const form = document.getElementById('gameForm');
+    const userInput = document.getElementById('userInput');
+    const result = document.getElementById('result');
+    const remainingDisplay = document.getElementById('remaining');
+    const previousDisplay = document.getElementById('previous');
+    const resetBtn = document.getElementById('resetBtn');
+
+    let randomNumber;
+    let guessesLeft;
+    let prevGuesses;
+    let isPlaying;
+
+    function startGame() {
+        randomNumber = Math.floor(Math.random() * 100) + 1;
+        guessesLeft = 10;
+        prevGuesses = [];
+        isPlaying = true;
+
+        userInput.disabled = false;
+        result.textContent = '';
+        remainingDisplay.textContent = guessesLeft;
+        previousDisplay.textContent = '';
+        userInput.value = '';
+    }
+
+    form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        if (!isPlaying) return;
+        validateGuess();
+    });
+
+    function validateGuess() {
+        const guess = parseInt(userInput.value);
+
+        if (isNaN(guess) || guess < 1 || guess > 100) {
+            displayMessage('Enter a valid number between 1 and 100.');
+            return;
+        }
+
+        if (prevGuesses.includes(guess)) {
+            displayMessage('You already guessed that number.');
+            return;
+        }
+
+        prevGuesses.push(guess);
+        updatePreviousDisplay();
+
+        processGuess(guess);
+        userInput.value = '';
+    }
+
+    function processGuess(guess) {
+        guessesLeft--;
+
+        if (guess === randomNumber) {
+            displayMessage('🎯 Correct! You win!');
+            endGame();
+            return;
+        }
+
+        if (guessesLeft === 0) {
+            displayMessage(`Game Over! Number was ${randomNumber}`);
+            endGame();
+            return;
+        }
+
+        if (guess < randomNumber) {
+            displayMessage('Too low!');
+        } else {
+            displayMessage('Too high!');
+        }
+    }
+
+    function updatePreviousDisplay() {
+        previousDisplay.textContent = prevGuesses.join(', ');
+    }
+
+    function displayMessage(msg) {
+        result.textContent = msg;
+        remainingDisplay.textContent = guessesLeft;
+    }
+
+    function endGame() {
+        isPlaying = false;
+        userInput.disabled = true;
+    }
+
+    resetBtn.addEventListener('click', startGame);
+
+    startGame();
+</script>
+
+</body>
+</html>

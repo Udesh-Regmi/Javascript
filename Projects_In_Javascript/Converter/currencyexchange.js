@@ -203,8 +203,8 @@ btn.addEventListener("click", async(ele) => {
             var rate= finalexcval[bottom.value.toLowerCase()]
             console.log(rate)
         }
-        catch  {
-            console.log("Error")
+        catch(e)  {
+            console.log("Error" , e)
         }
         let final_amount= value*rate;
     document.querySelector(".text").innerText=`Conversion Amount= ${final_amount}`
@@ -212,10 +212,6 @@ btn.addEventListener("click", async(ele) => {
 
     
 })
-
-
-
-
 
 
 

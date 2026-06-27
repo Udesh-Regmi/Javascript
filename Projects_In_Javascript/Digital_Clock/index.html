@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Clock</title>
+    <style>
+        .main{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 98vh;
+            font-family: Arial, sans-serif;
+            background-color: #000000;
+            color: #ffffff;
+
+        }
+        .digital-clock-outer-body{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 300px;
+            height: 100px;
+            background-color: #333333;
+            border-radius: 10px;
+        }
+        .digital-clock-inner-body{
+            display: flex;
+            gap: 10px;
+            font-size: 2em;
+        }
+        .analog-clock-outer-body{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 300px;
+            height: 300px;
+            background-color: #333333;
+            border-radius: 50%;
+            margin-top: 20px;
+        }
+        .analog-clock{
+            position: relative;
+            width: 250px;
+            height: 250px;
+            border: 5px solid #4274d0;
+            border-radius: 50%;
+            transform: rotate(270deg);
+
+        }
+        .hour-hand, .minute-hand, .second-hand{
+            position: absolute;
+            width: 50%;
+            height: 2px;
+            background-color: #ffffff;
+            top: 50%;
+            left: 50%;
+            transform-origin: 0% 0%; 
+        }
+        .hour-hand{
+            height: 4px;
+            width: 35%;
+        }
+        .minute-hand{
+            width: 45%;
+        }
+        .second-hand{
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="main">
+        <div class="digital-clock-outer-body">
+            <div class="digital-clock-inner-body">
+                <div class="hour">00 : </div>
+                <div class="minute">00 : </div>
+                <div class="second">00 </div>
+            </div>
+        </div>
+        <div class="analog-clock-outer-body">
+            <div class="analog-clock">
+                <div class="hour-hand"></div>
+                <div class="minute-hand"></div>
+                <div class="second-hand"></div>
+            </div>
+        </div>
+    </div>
+    <script>
+        setInterval(() => {
+        let date = new Date();
+        let hour = date.getHours();
+        let minute = date.getMinutes();
+        let second = date.getSeconds();
+        document.querySelector('.hour').textContent = hour < 10 ? '0' + hour : `${hour} : `;
+        document.querySelector('.minute').textContent = minute < 10 ? '0' + minute : `${minute} : `;
+        document.querySelector('.second').textContent = second < 10 ? '0' + second : `${second} `;
+        document.querySelector('.hour-hand').style.transform = `rotate(${hour * 30 + minute * 0.5}deg)`;
+        document.querySelector('.minute-hand').style.transform = `rotate(${minute * 6}deg)`;
+        document.querySelector('.second-hand').style.transform = `rotate(${second * 6}deg)`;
+        
+        }, 1000);
+    </script>
+</body>
+</html>
